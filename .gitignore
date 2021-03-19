@@ -25,3 +25,5 @@ hs_err_pid*
 #intellij
 KleineFische.iml
 *idea/
+/shelf/
+/workspace.xml
