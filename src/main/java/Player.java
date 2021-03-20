@@ -20,4 +20,15 @@ public class Player {
         hand.addCards(cards);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getNumberID() {
+        return numberID;
+    }
+
+    public Deck getHand() {
+        return hand;
+    }
 }

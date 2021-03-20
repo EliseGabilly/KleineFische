@@ -64,4 +64,14 @@ public class Deck {
     public List<Card> getCardsList(){
         return cardsList;
     }
+
+    public int countPoints(){
+        Map<FishType, Integer> bestCards = new EnumMap<>(FishType.class);
+        for (Card card: cardsList){
+            if (bestCards.get(card.getType()) == null || bestCards.get(card.getType()) < card.getValue()){
+                bestCards.put(card.getType(), card.getValue());
+            }
+        }
+        return bestCards.values().stream().reduce(0, Integer::sum);
+    }
 }

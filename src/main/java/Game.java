@@ -22,6 +22,18 @@ public class Game {
                 turn(player);
             }
         }
+        showResult();
+    }
+
+    private void showResult() {
+        System.out.println("The result --- ");
+        System.out.println("After "+roundNb+" rounds");
+        for(Player player : playerList){
+            System.out.println(player.getName()+" : ");
+            System.out.print("Final hand : ");
+            player.getHand().printCards();
+            System.out.println("Score : "+player.getHand().countPoints());
+        }
     }
 
     private void turn(Player player) {
@@ -37,17 +49,20 @@ public class Game {
             drawDuplicate = draw.isCardDuplicate(card);
 
             draw.addCard(card);
-            draw.printCards();
         }
 
         if(drawDuplicate){
             int ind = draw.indexOfDuplicate(card);
             player.takeCards(draw.getCardsList().subList(0,ind));
             discard.addCards(draw.getCardsList().subList(ind, draw.getCardsList().size()));
+            System.out.println(player.getName()+" : got duplicate");
         }else if(drawOctopus){
             discard.addCards(draw);
+            //TODO
+            System.out.println(player.getName()+" : got octopus");
         } else{
             player.takeCards(draw);
+            System.out.println(player.getName()+" : got a safe turn");
         }
 
     }
