@@ -8,10 +8,12 @@ public class KleineFische {
         Player p1 = new Player(1, "Alice");
         Player p2 = new Player(2, "Bob");
 
+        Game aGame = null;
         try {
-            Game aGame = new Game(new Player[]{p1, p2});
+            aGame = new Game(new Player[]{p1, p2});
         } catch (Exception e) {
             e.printStackTrace();
         }
+        aGame.start();
     }
 }

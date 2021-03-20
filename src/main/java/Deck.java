@@ -10,7 +10,7 @@ import main.java.Card.FishType;
 
 public class Deck {
 
-    List<Card> cardsList = new ArrayList<>();
+    private List<Card> cardsList = new ArrayList<>();
 
     Deck (boolean isPile){
         if (isPile){
@@ -30,8 +30,32 @@ public class Deck {
 
     public void printCards(){
         cardsList.stream().forEach(card -> {
-            System.out.print(card.type+" "+card.value+"; ");
+            System.out.print(card.getType()+" "+card.getValue()+"; ");
         });
+        System.out.println("");
     }
 
+    public boolean hasCard() {
+        return !cardsList.isEmpty();
+    }
+
+    public Card drawOne(){
+        return cardsList.remove(0);
+    }
+
+    public void addCard(Card card){
+        cardsList.add(card);
+    }
+
+    public void addCards(Deck cards){
+        cardsList.addAll(cards.getCardsList());
+    }
+
+    public boolean isCardDuplicate (Card cardDrawn){
+        return cardsList.stream().anyMatch(card -> card.getType().equals(cardDrawn.getType()));
+    }
+
+    public List<Card> getCardsList(){
+        return cardsList;
+    }
 }
