@@ -1,8 +1,17 @@
 package main.java;
 
+import java.util.Arrays;
+
 public class KleineFische {
 
     public static void main(String[] args) {
-        System.out.println("Kleine Fische : le début");
+        Player p1 = new Player(1, "Alice");
+        Player p2 = new Player(2, "Bob");
+
+        try {
+            Game aGame = new Game(new Player[]{p1, p2});
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

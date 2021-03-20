@@ -2,18 +2,22 @@ package main.java;
 
 public class Game {
 
-    int playerNb;
-    int[] playerOrder;
+    Player[] playerList;
     int roundNb = 0;
-    Deck pile; //pioche
-    Deck discard; //défausse
-    Deck draw;
+    Deck pile = new Deck(true); //pioche
+    Deck discard = new Deck(false); //défausse
+    Deck draw = new Deck(false);
 
-    Game (int playerNb){
-        this.playerNb = playerNb;
-        //generate player order
-        //generate Decks
-        //start game
+    Game (Player[] playerList) throws Exception {
+        if(playerList.length >4 || playerList.length < 2){
+            throw new Exception("This game is for 2 to 4 players. (actual number of players :"+playerList.length+")");
+        } else {
+            this.playerList = playerList;
+        }
+        System.out.println("game start");
+        pile.printCards();
+        discard.printCards();
+        draw.printCards();
     }
 
 }

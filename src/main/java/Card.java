@@ -2,7 +2,7 @@ package main.java;
 
 public class Card {
 
-    enum FishType {zero, one, two, three, four, five, six, seven, height, nine, ten};
+    enum FishType {o, a, b, c, d, e, f, g, h, i, j};
     FishType type;
     int value; //0 if octopus
 

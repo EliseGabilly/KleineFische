@@ -4,12 +4,11 @@ public class Player {
 
     String name;
     int numberID;
-    Deck hand;
+    Deck hand = new Deck(false);;
 
-    Player (int  numberID){
+    Player (int  numberID, String name){
         this.numberID = numberID;
-        this.hand = new Deck(false);
-
+        this.name = name;
     }
 
 }
