@@ -1,27 +1,19 @@
 package main.java;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Stream;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import main.java.Card.FishType;
 
 public class Deck {
 
-    private List<Card> cardsList = new ArrayList<>();
+    private final List<Card> cardsList = new ArrayList<>();
 
     Deck (boolean isPile){
         if (isPile){
             int[] cardValues = new int[]{1, 1, 2, 2, 3, 4};
             Arrays.stream(FishType.values()).skip(1)
-                                            .forEach(fishType -> {
-                                                Arrays.stream(cardValues).forEach(val -> {
-                                                    Card aCard = new Card(fishType, val);
-                                                    cardsList.add(aCard);
-                                                });
-                                            });
+                                            .forEach(fishType -> Arrays.stream(cardValues).mapToObj(val -> new Card(fishType, val)).forEach(cardsList::add));
             Card octopus = new Card(FishType.o, 0);
             cardsList.addAll(Collections.nCopies(6, octopus));
             Collections.shuffle(cardsList);
@@ -29,10 +21,10 @@ public class Deck {
     }
 
     public void printCards(){
-        cardsList.stream().forEach(card -> {
-            System.out.print(card.getType()+" "+card.getValue()+"; ");
-        });
-        System.out.println("");
+        for (Card card : cardsList) {
+            System.out.print(card.getType() + " " + card.getValue() + "; ");
+        }
+        System.out.println();
     }
 
     public boolean hasCard() {
@@ -50,9 +42,23 @@ public class Deck {
     public void addCards(Deck cards){
         cardsList.addAll(cards.getCardsList());
     }
+    public void addCards(List<Card> cards){
+        cardsList.addAll(cards);
+    }
 
     public boolean isCardDuplicate (Card cardDrawn){
         return cardsList.stream().anyMatch(card -> card.getType().equals(cardDrawn.getType()));
+    }
+
+    public int indexOfDuplicate (Card cardDrawn){
+        int index = 0;
+        for(Card card : cardsList){
+            if(card.getType().equals(cardDrawn.getType())){
+                return index;
+            }
+            index++;
+        }
+        return index;
     }
 
     public List<Card> getCardsList(){

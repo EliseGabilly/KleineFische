@@ -29,27 +29,26 @@ public class Game {
         boolean drawOctopus = false;
         boolean drawDuplicate = false;
 
+        Card card = null;
         while (pile.hasCard() && !drawDuplicate && !drawOctopus) {
-            Card card = pile.drawOne();
-            if (card.getType().equals(Card.FishType.o)){
-                drawOctopus = true;
-                //TODO roll dice
-            } else if (draw.isCardDuplicate(card)){
-                drawDuplicate = true;
-                //TODO end turn
-            }
+            card = pile.drawOne();
+
+            drawOctopus = card.getType().equals(Card.FishType.o);
+            drawDuplicate = draw.isCardDuplicate(card);
+
             draw.addCard(card);
             draw.printCards();
         }
 
         if(drawDuplicate){
-
+            int ind = draw.indexOfDuplicate(card);
+            player.takeCards(draw.getCardsList().subList(0,ind));
+            discard.addCards(draw.getCardsList().subList(ind, draw.getCardsList().size()));
         }else if(drawOctopus){
             discard.addCards(draw);
         } else{
             player.takeCards(draw);
         }
-
 
     }
 
