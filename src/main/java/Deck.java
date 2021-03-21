@@ -1,7 +1,6 @@
 package main.java;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import main.java.Card.FishType;
 
@@ -13,7 +12,7 @@ public class Deck {
         if (isPile){
             int[] cardValues = new int[]{1, 1, 2, 2, 3, 4};
             Arrays.stream(FishType.values()).skip(1)
-                                            .forEach(fishType -> Arrays.stream(cardValues).mapToObj(val -> new Card(fishType, val)).forEach(cardsList::add));
+                  .forEach(fishType -> Arrays.stream(cardValues).mapToObj(val -> new Card(fishType, val)).forEach(cardsList::add));
             Card octopus = new Card(FishType.o, 0);
             cardsList.addAll(Collections.nCopies(6, octopus));
             Collections.shuffle(cardsList);

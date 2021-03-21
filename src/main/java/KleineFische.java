@@ -14,6 +14,7 @@ public class KleineFische {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        assert aGame != null;
         aGame.start();
     }
 }

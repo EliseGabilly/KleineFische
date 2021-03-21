@@ -4,9 +4,9 @@ import java.util.List;
 
 public class Player {
 
-    private String name;
-    private int numberID;
-    private Deck hand = new Deck(false);;
+    private final String name;
+    private final int numberID;
+    private final Deck hand = new Deck(false);
 
     Player (int  numberID, String name){
         this.numberID = numberID;
@@ -21,7 +21,7 @@ public class Player {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public int getNumberID() {
