@@ -125,15 +125,14 @@ public class Game {
         do{
             System.out.print("Wanna bet ? (1 to 3) ");
             try {
-                bet = in.nextInt();
+                bet = Integer.parseInt(in.nextLine());
                 if(bet<=3 && bet>=1){
                     validEntry = true;
                 } else {
                     System.out.println("Please bet 1, 2 or 3");
                 }
-            } catch (InputMismatchException e){
+            } catch (NumberFormatException e){
                 System.out.println("Please bet 1, 2 or 3");
-                in.next();
             }
         } while (!validEntry);
         return bet;
