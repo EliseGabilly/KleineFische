@@ -1,6 +1,7 @@
 package main.java;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Game {
 
@@ -15,6 +16,7 @@ public class Game {
         if(playerList.length >4 || playerList.length < 2){
             throw new Exception("This game is for 2 to 4 players. (actual number of players :"+playerList.length+")");
         } else {
+            Collections.shuffle(Arrays.asList(playerList));
             this.playerList = playerList;
         }
     }
@@ -72,7 +74,8 @@ public class Game {
 
             do{
                 System.out.print("Wanna play again ? (y/n) ");
-                String s = in.nextLine();
+//                String s = in.nextLine();
+                String s = "y";
                 if(s.equals("y") || s.equals("Y")){
                     validEntry = true;
                 } else if (s.equals("n") || s.equals("N")){
@@ -106,10 +109,45 @@ public class Game {
 
     private void octopusEnd(Player player){
         //select opponent player
-        int bet = placeBet();
-        int dice = roleDice();
-        System.out.println(dice);
-        System.out.println(bet);
+        Optional<Player> opponentChoosed = selectOpponent(player);
+        if(opponentChoosed.isPresent()){
+            System.out.println("You bet against : "+opponentChoosed.get().getName());
+            int bet = placeBet(Math.min(opponentChoosed.get().getHand().getCardsList().size(), 3));
+            int dice = roleDice();
+            System.out.println(dice);
+            System.out.println(bet);
+
+        }
+    }
+
+    private Optional<Player> selectOpponent(Player player) {
+        Optional<Player> chosenOne = Optional.empty();
+        List<Player> opponents = Arrays.asList(playerList);
+        opponents = opponents.stream().filter(p -> p.getNumberID()!=player.getNumberID() && p.getHand().hasCard())
+                .collect(Collectors.toList());
+        if(opponents.isEmpty()){
+            System.out.println("Sorry noone else have cards to steel from");
+        } else if(opponents.size()==1){
+            chosenOne = Optional.of(opponents.get(0));
+        } else {
+            System.out.print("You can choose from : ");
+            opponents.forEach(p -> System.out.println(p.getName() + " (id: "+p.getNumberID()+") have "+p.getHand().getCardsList().size()));
+            do{
+                System.out.print("Input player ID :");
+                try {
+                    int chosenID = Integer.parseInt(in.nextLine());
+                    if(opponents.stream().anyMatch(p -> p.getNumberID()== chosenID)){
+                        chosenOne = opponents.stream().filter(p -> p.getNumberID()== chosenID)
+                                .findFirst();
+                    } else {
+                        System.out.println("Invalid ID");
+                    }
+                } catch (NumberFormatException e){
+                    System.out.println("Invalid ID");
+                }
+            } while (chosenOne.isEmpty());
+        }
+        return chosenOne;
     }
 
     private int roleDice() {
@@ -118,21 +156,21 @@ public class Game {
         return givenList.get(rand.nextInt(givenList.size()));
     }
 
-    private int placeBet() {
+    private int placeBet(int highestBet) {
         boolean validEntry = false;
         int bet = 0;
 
         do{
-            System.out.print("Wanna bet ? (1 to 3) ");
+            System.out.print("Wanna bet ? (1 to "+highestBet+") ");
             try {
                 bet = Integer.parseInt(in.nextLine());
-                if(bet<=3 && bet>=1){
+                if(bet<=highestBet && bet>=1){
                     validEntry = true;
                 } else {
-                    System.out.println("Please bet 1, 2 or 3");
+                    System.out.println("Please bet (1 to "+highestBet+") ");
                 }
             } catch (NumberFormatException e){
-                System.out.println("Please bet 1, 2 or 3");
+                System.out.println("Please bet (1 to "+highestBet+") ");
             }
         } while (!validEntry);
         return bet;
