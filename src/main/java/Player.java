@@ -1,5 +1,6 @@
 package main.java;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
@@ -18,6 +19,15 @@ public class Player {
     }
     public void takeCards(List<Card> cards){
         hand.addCards(cards);
+    }
+
+    public List<Card> giveRdmCard(int nbOfCardToGive){
+        List<Card> l = new ArrayList<>();
+        hand.shuffle();
+        for(int i =0; i<nbOfCardToGive; i++){
+            l.add(hand.drawOne());
+        }
+        return l;
     }
 
     public String getName() {

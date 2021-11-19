@@ -15,8 +15,12 @@ public class Deck {
                   .forEach(fishType -> Arrays.stream(cardValues).mapToObj(val -> new Card(fishType, val)).forEach(cardsList::add));
             Card octopus = new Card(FishType.o, 0);
             cardsList.addAll(Collections.nCopies(6, octopus));
-            Collections.shuffle(cardsList);
+            shuffle();
         }
+    }
+
+    public void shuffle(){
+        Collections.shuffle(cardsList);
     }
 
     public void printCards(){

@@ -32,11 +32,9 @@ public class Game {
     }
 
     private void showResult() {
-        System.out.println("The result --- ");
-        System.out.println("After "+roundNb+" rounds");
+        System.out.println("The result   -------   After "+roundNb+" rounds");
         for(Player player : playerList){
-            System.out.println(player.getName()+" : ");
-            System.out.print("Final hand : ");
+            System.out.println(player.getName()+" final hand : ");
             player.getHand().printCards();
             System.out.println("Score : "+player.getHand().countPoints());
         }
@@ -74,7 +72,6 @@ public class Game {
 
             do{
                 System.out.print("Wanna play again ? (y/n) ");
-//                String s = in.nextLine();
                 String s = "y";
                 if(s.equals("y") || s.equals("Y")){
                     validEntry = true;
@@ -105,6 +102,7 @@ public class Game {
             player.takeCards(draw);
             System.out.println("safe turn");
         }
+        System.out.println("");
     }
 
     private void octopusEnd(Player player){
@@ -114,9 +112,20 @@ public class Game {
             System.out.println("You bet against : "+opponentChoosed.get().getName());
             int bet = placeBet(Math.min(opponentChoosed.get().getHand().getCardsList().size(), 3));
             int dice = roleDice();
-            System.out.println(dice);
-            System.out.println(bet);
-
+            System.out.println("You bet "+bet+" and roled a "+dice);
+            if (dice==-1){
+                System.out.println("Unlucky for you, "+opponentChoosed.get().getName()+" get to steel you a card");
+                if(player.getHand().getCardsList().size()>=1){
+                    opponentChoosed.get().takeCards(player.giveRdmCard(1));
+                } else {
+                    System.out.println("Unlucky for him you have no card to be stolen");
+                }
+            } else if (bet>dice){
+                System.out.println("Too greedy you don't get anything");
+            } else {
+                System.out.println("You get to steel "+bet+" cards to "+opponentChoosed.get().getName());
+                player.takeCards(opponentChoosed.get().giveRdmCard(bet));
+            }
         }
     }
 
@@ -126,11 +135,11 @@ public class Game {
         opponents = opponents.stream().filter(p -> p.getNumberID()!=player.getNumberID() && p.getHand().hasCard())
                 .collect(Collectors.toList());
         if(opponents.isEmpty()){
-            System.out.println("Sorry noone else have cards to steel from");
+            System.out.println("Sorry no one else have cards to steel from");
         } else if(opponents.size()==1){
             chosenOne = Optional.of(opponents.get(0));
         } else {
-            System.out.print("You can choose from : ");
+            System.out.println("You can choose from : ");
             opponents.forEach(p -> System.out.println(p.getName() + " (id: "+p.getNumberID()+") have "+p.getHand().getCardsList().size()));
             do{
                 System.out.print("Input player ID :");
@@ -157,6 +166,9 @@ public class Game {
     }
 
     private int placeBet(int highestBet) {
+        if(highestBet==1){
+            return 1;
+        }
         boolean validEntry = false;
         int bet = 0;
 
